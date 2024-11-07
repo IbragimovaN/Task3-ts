@@ -1,11 +1,26 @@
+interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+
 const COMMENTS_URL = "https://jsonplaceholder.typicode.com/comments";
 
-const getData = (url) => {
-  // Your code here...
+const getData = (url: string): Promise<Comment[]> => {
+  return fetch(url).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  });
 };
 
-getData(COMMENTS_URL).then((data) => {
-  // Your code here...
+getData(COMMENTS_URL).then((data: Comment[]) => {
+  data.map((item: Comment) =>
+    console.log(`ID: ${item.id}, email: ${item.email}`)
+  );
 });
 
 /**
